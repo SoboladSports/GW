@@ -105,15 +105,25 @@ class Tag(object):
 
 		
 class TestCase(object):
+	PRIORITY_CHOICES = (
+			('Smoke', 'Smoke'),
+			('General', 'General'),
+			('Detailed', 'Detailed'),
+		)
 	title = models.CharField(max_length = 250)
 	description = models.TextField()
 	condition = models.ManyToManyField(Condition)
 	teststep = models.ManyToManyField(TestStep)
 	tag = models.ManyToManyFnfvield(Tag)
+	priority = models.CharField(max_length = 10, default = 'Smoke', choices = PRIORITY_CHOICES)
+	created = models.DateTimeField(auto_now_add = True)
+	edited = models.DateTimeField(auto_now = True)
+	slug = models.SlugField(max_length = 250, unique = True)
 
 	def save(self, arg):
+		self.slug = slugify(self.title)
 		super(TestCase, self).save()
 		self.arg = arg
 
 	def __str__(self):
-		return self.titl
+		return self.title
