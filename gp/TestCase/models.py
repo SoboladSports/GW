@@ -58,7 +58,6 @@ class Condition(object):
 	element = models.ForeignKey(Element)
 	action = models.ForeignKey(Action)
 	testdata = models.ForeignKey(TestData)
-	#expresult = models.OneToOneField(ExpectedResult)
 
 	"""docstring for Condition"""
 	def save(self, arg):
@@ -97,7 +96,7 @@ class TestCase(object):
 	description = models.TextField()
 	condition = models.ManyToManyField(Condition)
 	teststep = models.ManyToManyField(TestStep)
-	tag = models.ManyToManyField(Tag)
+	tag = models.ManyToManyFnfvield(Tag)
 
 
 	"""docstring for TestCase"""
@@ -107,44 +106,3 @@ class TestCase(object):
 
 	def __str__(self):
 		return self.title
-						
-		
-		
-
-		
-
-
-
-
-'''
-class TestCase(object):
-	title = models.CharField(max_length = 250)
-	description = models.TextField()
-	created = models.DateTimeField(auto_now_add = True)
-	update = models.DateTimeField(auto_now_add = True)
-	slug = models.SlugField(max_length = 200, unique = True)
-
-
-	"""docstring for TestCase"""
-	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
-		super(TestCase, self).save(*args, **kwargs)
-
-	def __str__(self):
-		return self.title	
-		
-
-'''
-
-'''class ExpectedResult(object):
-	text = models.TextField()
-
-	"""docstring for ExpectedResult"""
-
-	def __init__(self, arg):
-		super(ExpectedResult, self).__init__()
-		self.arg = arg
-
-	def __str__(self):
-		return self.text
-	'''
