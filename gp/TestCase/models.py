@@ -60,7 +60,7 @@ class Action(models.Model):
 
 
 class Condition(models.Model):
-	title = models.CharField(attrs={'required': False, 'blank' : True, 'null' : True})
+	title = models.CharField(blank = True, null = True)
 	screen = models.ForeignKey(Screen, on_delete = models.CASCADE)
 	element = models.ForeignKey(Element, on_delete = models.CASCADE)
 	action = models.ForeignKey(Action, on_delete = models.CASCADE)
@@ -77,7 +77,7 @@ class Condition(models.Model):
 
 
 class TestStep(models.Model):
-	title = models.CharField(attrs={'required': False, 'blank' : True, 'null' : True})
+	title = models.CharField(blank = True, null = True)
 	condition = models.ForeignKey(Condition, on_delete = models.CASCADE)
 	expresult = models.TextField()
 
