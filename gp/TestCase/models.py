@@ -114,7 +114,7 @@ class TestCase(models.Model):
 	description = models.TextField()
 	condition = models.ManyToManyField(Condition)
 	teststep = models.ManyToManyField(TestStep)
-	tag = models.ManyToManyFnfvield(Tag)
+	tag = models.ManyToManyField(Tag)
 	priority = models.CharField(max_length = 10, default = 'Smoke', choices = PRIORITY_CHOICES)
 	created = models.DateTimeField(auto_now_add = True)
 	edited = models.DateTimeField(auto_now = True)
