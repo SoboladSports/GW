@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 
 
 
-class Screen(object):
+class Screen(models.Model):
 	title = models.CharField(max_length = 250)
 
 	def save(self, arg):
@@ -17,7 +17,7 @@ class Screen(object):
 
 
 
-class Element(object):
+class Element(models.Model):
 	title = models.CharField(max_length = 250)
 	screen = models.ManyToManyField(Screen)
 	
@@ -31,7 +31,7 @@ class Element(object):
 
 
 
-class TestData(object):
+class TestData(models.Model):
 	data = models.CharField(max_length = 250)
 
 	def save(self, arg):
@@ -44,10 +44,10 @@ class TestData(object):
 
 
 
-class Action(object):
+class Action(models.Model):
 	title = models.CharField(max_length = 250)
 	element = models.ManyToManyField(Element)
-	testdata = models.ForeignKey(TestData)
+	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE)
 
 	def save(self, arg):
 		super(Action, self).save()
@@ -59,12 +59,12 @@ class Action(object):
 
 
 
-class Condition(object):
+class Condition(models.Model):
 	title = models.CharField(required=False, blank=True, null=True)
-	screen = models.ForeignKey(Screen)
-	element = models.ForeignKey(Element)
-	action = models.ForeignKey(Action)
-	testdata = models.ForeignKey(TestData)
+	screen = models.ForeignKey(Screen, on_delete = models.CASCADE)
+	element = models.ForeignKey(Element, on_delete = models.CASCADE)
+	action = models.ForeignKey(Action, on_delete = models.CASCADE)
+	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE)
 
 	def save(self, arg):
 		super(Condition, self).save()
@@ -76,9 +76,9 @@ class Condition(object):
 
 
 
-class TestStep(object):
+class TestStep(models.Model):
 	title = models.CharField(required=False, blank=True, null=True)
-	condition = models.ForeignKey(Condition)
+	condition = models.ForeignKey(Condition, on_delete = models.CASCADE)
 	expresult = models.TextField()
 
 	def save(self, arg):
@@ -91,7 +91,7 @@ class TestStep(object):
 
 
 
-class Tag(object):
+class Tag(models.Model):
 	title = models.CharField(max_length = 250)
 
 	def save(self, arg):
@@ -104,7 +104,7 @@ class Tag(object):
 
 
 		
-class TestCase(object):
+class TestCase(models.Model):
 	PRIORITY_CHOICES = (
 			('Smoke', 'Smoke'),
 			('General', 'General'),
