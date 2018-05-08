@@ -2,10 +2,10 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
+
+
 class Screen(object):
 	title = models.CharField(max_length = 250)
-
-	"""docstring for Screen"""
 
 	def save(self, arg):
 		super(Screen, self).save()
@@ -14,10 +14,12 @@ class Screen(object):
 	def __str__(self):
 		return self.title
 
+
+
+
 class Element(object):
 	title = models.CharField(max_length = 250)
 	screen = models.ManyToManyField(Screen)
-	"""docstring for Element"""
 	
 	def save(self, arg):
 		super(Element, self).save()
@@ -26,10 +28,11 @@ class Element(object):
 	def __str__(self):
 		return self.title
 
+
+
+
 class TestData(object):
 	data = models.CharField(max_length = 250)
-
-	"""docstring for TestData"""
 
 	def save(self, arg):
 		super(TestData, self).save()
@@ -38,12 +41,13 @@ class TestData(object):
 	def __str__(self):
 		return self.data
 
+
+
+
 class Action(object):
 	title = models.CharField(max_length = 250)
 	element = models.ManyToManyField(Element)
 	testdata = models.ForeignKey(TestData)
-	"""docstring for Action"""
-
 
 	def save(self, arg):
 		super(Action, self).save()
@@ -52,6 +56,9 @@ class Action(object):
 	def __str__(self):
 		return self.title	
 
+
+
+
 class Condition(object):
 	title = models.CharField(required=False, blank=True, null=True)
 	screen = models.ForeignKey(Screen)
@@ -59,7 +66,6 @@ class Condition(object):
 	action = models.ForeignKey(Action)
 	testdata = models.ForeignKey(TestData)
 
-	"""docstring for Condition"""
 	def save(self, arg):
 		super(Condition, self).save()
 		self.arg = arg
@@ -67,12 +73,13 @@ class Condition(object):
 	def __str__(self):
 		return self.title
 
+
+
+
 class TestStep(object):
 	title = models.CharField(required=False, blank=True, null=True)
 	condition = models.ForeignKey(Condition)
 	expresult = models.TextField()
-
-	"""docstring for TestStep"""
 
 	def save(self, arg):
 		super(TestStep, self).save()
@@ -81,15 +88,21 @@ class TestStep(object):
 	def __str__(self):
 		return self.title
 
+
+
+
 class Tag(object):
 	title = models.CharField(max_length = 250)
-	"""docstring for Tag"""
+
 	def save(self, arg):
 		super(Tag, self).save()
 		self.arg = arg
 
 	def __str__(self):
 		return self.title
+
+
+
 		
 class TestCase(object):
 	title = models.CharField(max_length = 250)
@@ -98,11 +111,9 @@ class TestCase(object):
 	teststep = models.ManyToManyField(TestStep)
 	tag = models.ManyToManyFnfvield(Tag)
 
-
-	"""docstring for TestCase"""
 	def save(self, arg):
 		super(TestCase, self).save()
 		self.arg = arg
 
 	def __str__(self):
-		return self.title
+		return self.titl
