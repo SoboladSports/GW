@@ -7,9 +7,8 @@ from django.template.defaultfilters import slugify
 class Screen(models.Model):
 	title = models.CharField(max_length = 250)
 
-	def save(self, arg):
-		super(Screen, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(Screen, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title
@@ -21,9 +20,8 @@ class Element(models.Model):
 	title = models.CharField(max_length = 250)
 	screen = models.ManyToManyField(Screen)
 	
-	def save(self, arg):
-		super(Element, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(Element, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title
@@ -34,9 +32,8 @@ class Element(models.Model):
 class TestData(models.Model):
 	data = models.CharField(max_length = 250)
 
-	def save(self, arg):
-		super(TestData, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(TestData, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.data
@@ -46,12 +43,10 @@ class TestData(models.Model):
 
 class Action(models.Model):
 	title = models.CharField(max_length = 250)
-	element = models.ManyToManyField(Element)
-	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE)
 
-	def save(self, arg):
-		super(Action, self).save()
-		self.arg = arg
+
+	def save(self, *args, **kwargs):
+		super(Action, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title	
@@ -60,33 +55,37 @@ class Action(models.Model):
 
 
 class Condition(models.Model):
-	title = models.CharField(max_length = 250, blank = True, null = True)
+	title = models.CharField(max_length = 250, blank = True, null = True, default='somevalue')
 	screen = models.ForeignKey(Screen, on_delete = models.CASCADE)
-	element = models.ForeignKey(Element, on_delete = models.CASCADE)
+	element = models.ForeignKey(Element, on_delete = models.CASCADE, blank = True, null = True)
 	action = models.ForeignKey(Action, on_delete = models.CASCADE)
-	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE)
+	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE, blank = True, null = True)
 
-	def save(self, arg):
-		super(Condition, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(Condition, self).save(*args, **kwargs)
 
 	def __str__(self):
-		return self.title
+		if (self.title == '' or self.title == "somevalue"):
+			return str(str(self.action) + ' ' + str(self.element) + ' at ' + str(self.screen) + ' screen ' + str(self.testdata)).replace('None','').replace('  ', ' ')
+		else:
+			return str(self.title)
 
 
 
 
 class TestStep(models.Model):
-	title = models.CharField(max_length = 250, blank = True, null = True)
+	title = models.CharField(max_length = 250, blank = True, null = True, default='somevalue')
 	condition = models.ForeignKey(Condition, on_delete = models.CASCADE)
 	expresult = models.TextField()
 
-	def save(self, arg):
-		super(TestStep, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(TestStep, self).save(*args, **kwargs)
 		
 	def __str__(self):
-		return self.title
+		if (self.title == '' or self.title == 'somevalue'):
+			return str(str(self.condition) + ' ' + str(self.expresult)).replace('None', '')
+		else:
+			return self.title
 
 
 
@@ -94,9 +93,8 @@ class TestStep(models.Model):
 class Tag(models.Model):
 	title = models.CharField(max_length = 250)
 
-	def save(self, arg):
-		super(Tag, self).save()
-		self.arg = arg
+	def save(self, *args, **kwargs):
+		super(Tag, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title
@@ -120,10 +118,9 @@ class TestCase(models.Model):
 	edited = models.DateTimeField(auto_now = True)
 	slug = models.SlugField(max_length = 250, unique = True)
 
-	def save(self, arg):
+	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
-		super(TestCase, self).save()
-		self.arg = arg
+		super(TestCase, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title
