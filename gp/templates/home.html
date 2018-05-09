@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+
+<head>
+	<title> home </title>
+</head>
+
+
+<body>
+{% if request.GET.name %}
+
+	<h1>{{message}}</h1>
+
+{% else %}
+
+<form method="GET" action="{% url 'home' %}">
+	<input name="name" value = "{{request.GET.name}}">
+	<button type="submit"> Submit </button>
+</form>
+
+{% endif %}
+</body>
+
+
+
+
+
+</html>
