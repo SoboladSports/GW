@@ -21,5 +21,5 @@ from .views import home
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', home, name='home'),
-    url(r'^testcase/$', include('TestCase.urls', namespace = 'TestCase'))
+    url(r'^testcase/', include('TestCase.urls', namespace = 'TestCase'))
 ]
