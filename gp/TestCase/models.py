@@ -100,7 +100,15 @@ class Tag(models.Model):
 		return self.title
 
 
+class Project(models.Model):
+	title = models.CharField(max_length = 250, blank = True, null = True, default = 'example')
 
+	def save(self, *args, **kwargs):
+		super(Project, self).save(*args, **kwargs)
+
+	def __str__(self):
+		return self.title		
+		
 		
 class TestCase(models.Model):
 	PRIORITY_CHOICES = (
@@ -117,6 +125,7 @@ class TestCase(models.Model):
 	created = models.DateTimeField(auto_now_add = True)
 	edited = models.DateTimeField(auto_now = True)
 	slug = models.SlugField(max_length = 250, unique = True)
+	project = models.ForeignKey(Project, on_delete = models.CASCADE, blank = True, null = True)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
