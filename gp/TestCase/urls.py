@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import TestCaseListView, TestCaseDetailView, test_case_detail, test_case_list, project_detail
+from .views import test_case_detail, test_case_list, project_detail
 
 app_name = 'TestCase'
 

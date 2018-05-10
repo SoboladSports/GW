@@ -1,34 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-
+from gp.config import pagination
 # Create your views here.
 
 from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
-
-
-class TestCaseListView(ListView):
-	model = TestCase
-
-	def get_context_data(self, **kwargs):
-		context = super(TestCaseListView, self).get_context_data(**kwargs)
-		return context
-
-
-class TestCaseDetailView(DetailView):
-	model = TestCase
-
-	def get_context_data(self, **kwargs):
-		context = super(TestCaseDetailView, self).get_context_data(**kwargs)
-		return context
 
 
 def test_case_list(request):
 	template = 'testcase/test_case_list.html'
 
 	object_list = TestCase.objects.all()
+
+	pages = pagination(request, object_list, 1)
+
 	context = {
-		'object_list' : object_list,
+		'items' : pages[0],
+		'page_range' : pages[1],
 
 	}
 	return render(request, template, context)
@@ -37,6 +23,7 @@ def test_case_detail(request, slug):
 	template = 'testcase/test_case_detail.html'
 
 	testcase = get_object_or_404(TestCase, slug = slug)
+
 	context = {
 
 		'TestCase' : testcase,
@@ -50,8 +37,10 @@ def project_detail(request, slug):
 	project = get_object_or_404(Project, slug = slug)
 	testcase = TestCase.objects.filter(project = project)
 
+	pages = pagination(request, testcase, 1)
 	context = {
 		'project' : project,
-		'testcase' : testcase,
+		'items' : pages[0],
+		'page_range' : pages[1],
 	}
 	return render(request, template, context)
