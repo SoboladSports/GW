@@ -5,12 +5,13 @@
 {% block content %}
 
 
-{% for obj in object_list %}
+{% for obj in items %}
 	<h1> <a href="{% url 'TestCase:test_case_detail' slug=obj.slug %}"> {{obj.title}} </a> </h1>
 	<p> {{obj.description}} </p>
 	<p> <a href="{% url 'TestCase:project_detail' slug=obj.project.slug %}"> {{obj.project}} </a> </p>
 
 {% endfor %}
 
+{% include 'pagination.html' %}
 
 {% endblock %}

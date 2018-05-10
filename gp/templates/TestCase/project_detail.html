@@ -8,10 +8,12 @@
 <hr>
 
 
-{% for item in testcase %}
+{% for item in items %}
 
-<h2> {{item.title}} </h2>
+<h2> <a href="{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title}} </a>  </h2>
 {{item.description|truncatechars:50}}
 {% endfor %}
+
+{% include 'pagination.html' %}
 
 {% endblock %}
