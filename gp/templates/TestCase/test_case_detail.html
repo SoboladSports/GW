@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+<h1>{{TestCase.title}}</h1>
+<p> <a href="{% url 'TestCase:project_detail' slug=TestCase.project.slug %}"> {{TestCase.project}} </a> </p>
+<p>{{TestCase.priority}}</p>
+{{TestCase.description}}
+{% endblock %}
