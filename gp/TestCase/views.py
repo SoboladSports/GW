@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 
 # Create your views here.
 
-from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep
+from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
 
 
 class TestCaseListView(ListView):
@@ -25,6 +25,7 @@ class TestCaseDetailView(DetailView):
 
 def test_case_list(request):
 	template = 'testcase/test_case_list.html'
+
 	object_list = TestCase.objects.all()
 	context = {
 		'object_list' : object_list,
@@ -34,10 +35,23 @@ def test_case_list(request):
 
 def test_case_detail(request, slug):
 	template = 'testcase/test_case_detail.html'
+
 	testcase = get_object_or_404(TestCase, slug = slug)
 	context = {
 
 		'TestCase' : testcase,
 	}
 
+	return render(request, template, context)
+
+def project_detail(request, slug):
+	template = 'testcase/project_detail.html'
+
+	project = get_object_or_404(Project, slug = slug)
+	testcase = TestCase.objects.filter(project = project)
+
+	context = {
+		'project' : project,
+		'testcase' : testcase,
+	}
 	return render(request, template, context)

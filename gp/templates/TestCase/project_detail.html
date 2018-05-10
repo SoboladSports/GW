@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1> {{project.title}} </h1>
+
+<hr>
+{% for item in testcase %}
+<p>
+{{item.title}}
+{{item.priority}}
+{{item.description|truncatechars:50}}
+</p>
+{% endfor %}
+
+{% endblock %}

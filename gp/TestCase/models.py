@@ -100,16 +100,22 @@ class Tag(models.Model):
 		return self.title
 
 
+
+
 class Project(models.Model):
 	title = models.CharField(max_length = 250, blank = True, null = True, default = 'example')
+	slug = models.SlugField(max_length = 250, unique = True, default = 'example')
 
 	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
 		super(Project, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title		
+
 		
 		
+
 class TestCase(models.Model):
 	PRIORITY_CHOICES = (
 			('Smoke', 'Smoke'),
