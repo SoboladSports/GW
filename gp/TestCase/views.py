@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from gp.config import pagination
+from django.db.models import Q
 # Create your views here.
 
 from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
@@ -43,4 +44,24 @@ def project_detail(request, slug):
 		'items' : pages[0],
 		'page_range' : pages[1],
 	}
+	return render(request, template, context)
+
+def search(request):
+	template = 'testcase/test_case_list.html'
+
+	query = request.GET.get('q')
+
+	if query:
+		results = TestCase.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+	else:
+		results = TestCase.objects.all()
+
+	pages = pagination(request, results, num=1)
+
+	context = {
+		'items' : pages[0],
+		'page_range' : pages[1],
+		'query' : query,
+	}
+
 	return render(request, template, context)
