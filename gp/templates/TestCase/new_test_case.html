@@ -2,8 +2,17 @@
 
 
 {% block content %}
+<div class="offset-3 col-md-6">
 
-
+{% with url_name=request.resolver_match.url_name %}
+	{% if url_name == 'new_test_case' %}
+		<h2> Add a new test-case </h2>
+	{% elif url_name == 'edit_test_case' %}
+		<h2> Edit test-case {{testcase}} </h2>
+	{% else %}
+		<h2> Delete test-case {{testcase}} </h2>
+	{% endif %}
+{% endwith %}
 {% if messages %}
 	{% for message in messages %}
 		<div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert">
@@ -12,7 +21,7 @@
 		</div>
 	{% endfor %}
 {% else %}
-<div class="offset-3 col-md-6">
+
 <form method="post"> {% csrf_token %}
     <div class="form-group">
     {% for field in form %}
@@ -21,7 +30,16 @@
     	{{field}}
     {% endfor %}
 	</div>
-	<button type="submit" class="btn btn-success" > Save </button>
+	{% with url_name=request.resolver_match.url_name %}
+		{% if url_name == 'new_test_case' %}
+			<button type="submit" class="btn btn-success" > Save </button>
+		{% elif url_name == 'edit_test_case' %}
+			<button type="submit" class="btn btn-warning" > Save </button>
+		{% else %}
+			<button type="submit" class="btn btn-danger" > Delete </button>
+		{% endif %}
+	{% endwith %}
+
 </form>
 
 </div>

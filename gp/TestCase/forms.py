@@ -16,6 +16,5 @@ class TestCaseForm(forms.ModelForm):
 			'condition' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}),
 			'teststep' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}),
 			'tag' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}),
-
 		}
 	  	

@@ -75,11 +75,10 @@ def new_test_case(request):
 	try:
 		if form.is_valid():
 			form.save()	
-			messages.success(request, 'Test Case was saved to the database')
+			messages.success(request, 'Test Case has been saved to the database')
 	#else:
 	except Exception as e:
-		form = TestCaseForm()
-		messages.warning(request, "Test Case was not saved. Error: {}".format(e))
+		messages.warning(request, 'Test Case has not been saved. Error: {}'.format(e))
 
 	context = {
 
@@ -89,4 +88,56 @@ def new_test_case(request):
 
 	return render(request, template, context)
 
+def edit_test_case(request, pk):
+	template = 'testcase/new_test_case.html'
+	testcase = get_object_or_404(TestCase, pk = pk)
 
+	if request.method == "POST":
+		form = TestCaseForm(request.POST, instance = testcase)
+		try:
+			if form.is_valid():
+				form.save()
+				messages.success(request, 'Test Case has been updated in the database')
+		except Exception as e:
+			messages.warning(request, 'Test Case has not been updated. Error: {}'.format(e))
+	else:
+		form = TestCaseForm(instance = testcase)
+
+	context = {
+		'form' : form,
+		'testcase' : testcase,
+	}
+	return render(request, template, context)
+
+def delete_test_case(request, pk):
+	template = 'testcase/new_test_case.html'
+
+	testcase = get_object_or_404(TestCase, pk = pk)
+	try:
+		if request.method == 'POST':
+			form = TestCaseForm(request.POST, instance = testcase)
+			testcase.delete()
+			messages.success(request, 'Test Case was deleted from the database')
+		else:
+			form = TestCaseForm(instance = testcase)
+	except Exception as e:
+		messages.warning(request, 'Test Case could not been deleted. Error: {}'.format(e))
+
+	context = {
+		'form' : form,
+	}
+
+	return render(request, template, context)
+
+def test_case_list_admin(request):
+	template = 'testcase/test_case_list_admin.html'
+	testcase = TestCase.objects.all()
+
+	pages = pagination(request, testcase, 5)
+
+	context = {
+		'items' : pages[0],
+		'page_range' : pages[1]
+	}
+
+	return render(request, template, context)
