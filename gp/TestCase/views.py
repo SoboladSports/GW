@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from gp.config import pagination
 from django.db.models import Q
+from django.contrib import messages
 # Create your views here.
 
 from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
-
+from .forms import TestCaseForm
 
 def test_case_list(request):
 	template = 'testcase/test_case_list.html'
@@ -65,3 +66,27 @@ def search(request):
 	}
 
 	return render(request, template, context)
+
+
+def new_test_case(request):
+	template = 'testcase/new_test_case.html'
+	form = TestCaseForm(request.POST or None)
+
+	try:
+		if form.is_valid():
+			form.save()	
+			messages.success(request, 'Test Case was saved to the database')
+	#else:
+	except Exception as e:
+			form = TestCaseForm()
+			messages.warning(request, "Test Case was not saved. Error {}".format(e))
+
+	context = {
+
+		'form' : form,
+
+	}
+
+	return render(request, template, context)
+
+
