@@ -2,24 +2,26 @@
 
 
 {% block content %}
+
+
 {% if messages %}
 	{% for message in messages %}
 		<div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<strong>{{message}}</strong>>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">X</span></button>
+			<strong>{{message}}</strong>
 		</div>
 	{% endfor %}
 {% else %}
 <div class="offset-3 col-md-6">
-
-<form method="TestCase"> 
+<form method="post"> {% csrf_token %}
     <div class="form-group">
     {% for field in form %}
-    	<label> {{field.label_tag}} </label>
+    	<hr>
+    	<h4> {{field.label_tag}} </h4>
     	{{field}}
     {% endfor %}
-	 </div>
-	<button class="btn btn-success" type="submit"> Save </button>
+	</div>
+	<button type="submit" class="btn btn-success" > Save </button>
 </form>
 
 </div>

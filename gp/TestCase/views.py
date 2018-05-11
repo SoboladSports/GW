@@ -78,8 +78,8 @@ def new_test_case(request):
 			messages.success(request, 'Test Case was saved to the database')
 	#else:
 	except Exception as e:
-			form = TestCaseForm()
-			messages.warning(request, "Test Case was not saved. Error {}".format(e))
+		form = TestCaseForm()
+		messages.warning(request, "Test Case was not saved. Error: {}".format(e))
 
 	context = {
 
