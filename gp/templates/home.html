@@ -8,18 +8,28 @@
 
 
 <body>
-{% if request.GET.name %}
 
-	<h1>{{message}}</h1>
 
-{% else %}
+<div class="offset-1 col-md-4">
 
-<form method="GET" action="{% url 'home' %}">
-	<input name="name" value = "{{request.GET.name}}">
-	<button type="submit"> Submit </button>
-</form>
+<h1> This is the catalog of available pages </h1>
 
-{% endif %}
+<h3>
+	<hr>
+	<a href = "http://127.0.0.1:8000/admin/TestCase/"> default admin panel for the TestCase app </a>
+	<hr>
+	<a href = "http://127.0.0.1:8000/testcase/test-case-list/"> test-case list with pagination and search </a>
+	<hr>
+	<a href = "http://127.0.0.1:8000/testcase/test-case-list-admin/"> test-case list with edit and delete functions available </a>
+	<hr>
+	<a href="http://127.0.0.1:8000/testcase/new-test-case/"> test-case creating view </a>
+	<hr>
+	<a href = "http://127.0.0.1:8000/testcase/edit_test_case/1/"> example of test-case editor view </a>
+	<hr>
+	<a href="http://127.0.0.1:8000/testcase/delete_test_case/10/"> example of test-case delete view </a>
+</h3>
+
+</div>
 </body>
 
 
