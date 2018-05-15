@@ -5,7 +5,7 @@ from django.contrib import messages
 # Create your views here.
 
 from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
-from .forms import TestCaseForm
+from .forms import TestCaseForm, TestCaseView
 
 
 def test_case_list(request):
@@ -24,13 +24,15 @@ def test_case_list(request):
 
 
 def test_case_detail(request, slug):
-    template = 'testcase/test_case_detail.html'
+    template = 'testcase/new_test_case.html'
 
     testcase = get_object_or_404(TestCase, slug=slug)
-
+    form = TestCaseView(instance=testcase)
+    
     context = {
 
-        'TestCase': testcase,
+        'TestCase' : testcase,
+        'form' : form,
     }
 
     return render(request, template, context)
@@ -42,7 +44,7 @@ def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)
     testcase = TestCase.objects.filter(project=project)
 
-    pages = pagination(request, testcase, 5)
+    pages = pagination(request, testcase, 10)
     context = {
         'project': project,
         'items': pages[0],

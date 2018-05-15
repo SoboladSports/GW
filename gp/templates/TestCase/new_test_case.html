@@ -9,10 +9,15 @@
 		<h2> Add a new test-case </h2>
 	{% elif url_name == 'edit_test_case' %}
 		<h2> Edit test-case {{testcase}} </h2>
-	{% else %}
+	{% elif url_name == 'delete_test_case' %}
 		<h2> Delete test-case {{testcase}} </h2>
+	{% else %}
+		<h2> Test-Case View </h2>
 	{% endif %}
 {% endwith %}
+
+
+
 {% if messages %}
 	{% for message in messages %}
 		<div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert">
@@ -22,21 +27,34 @@
 	{% endfor %}
 {% else %}
 
+
+
+
 <form method="post"> {% csrf_token %}
     <div class="form-group">
     {% for field in form %}
     	<hr>
     	<h4> {{field.label_tag}} </h4>
-    	{{field}}
+    	{% if field == 'project' %}
+    		{{field.get_project}}
+    	{% else %}
+    		{{field}}
+    	{% endif %}
     {% endfor %}
 	</div>
+
+
+
+
+
 	{% with url_name=request.resolver_match.url_name %}
 		{% if url_name == 'new_test_case' %}
 			<button type="submit" class="btn btn-success" > Save </button>
 		{% elif url_name == 'edit_test_case' %}
 			<button type="submit" class="btn btn-warning" > Save </button>
-		{% else %}
+		{% elif url_name == 'delete_test_case' %}
 			<button type="submit" class="btn btn-danger" > Delete </button>
+		{% else %}
 		{% endif %}
 	{% endwith %}
 
@@ -45,3 +63,9 @@
 </div>
 {% endif %}
 {% endblock %}
+
+
+
+
+
+

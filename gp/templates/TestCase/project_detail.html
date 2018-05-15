@@ -7,14 +7,34 @@
 
 <hr>
 
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col"> ID </th>
+			<th scope="col"> TC Title </th>
+			<th scope="col"> Priority </th>
+			<th scope="col"> Tags </th>
+			<th scope="col"> Edit </th>
+			<th scope="col"> Delete </th>
+		</tr>
 
-{% for item in items %}
+	</thead>
+	<tbody>
+	{% for item in items %}
+		<tr>
+			<td> {{item.pk}} </td>
+			<td> <a href = "{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title|truncatechars:20}} </a> </td>
+			<td> {{item.priority}} </td>
+			<td> {{item.get_tags}} </td>
+			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
+			<td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
+		</tr>		
+	{% endfor %}
+	</tbody>
 
-	<h2> <a href="{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title}} </a>  </h2>
-	{{item.description|truncatechars:50}}
 
+</table>
 
-{% endfor %}
 
 {% include 'pagination.html' %}
 

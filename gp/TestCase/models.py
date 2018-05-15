@@ -25,12 +25,17 @@ class Element(models.Model):
 
 	def __str__(self):
 		return self.title
+	
+	def get_screen(self):
+		screens = [t.title for t in self.screen.all()]
+		return screens
 
 
 
 
 class TestData(models.Model):
 	data = models.CharField(max_length = 250)
+
 
 	def save(self, *args, **kwargs):
 		super(TestData, self).save(*args, **kwargs)
@@ -69,6 +74,9 @@ class Condition(models.Model):
 			return str(str(self.action) + ' ' + str(self.element) + ' at ' + str(self.screen) + ' screen ' + str(self.testdata)).replace('None','').replace('  ', ' ')
 		else:
 			return str(self.title)
+
+	def get_screen(self):
+		return self.screen
 
 
 
@@ -114,7 +122,8 @@ class Project(models.Model):
 		super(Project, self).save(*args, **kwargs)
 
 	def __str__(self):
-		return self.title		
+		return self.title
+
 
 		
 		
@@ -144,12 +153,17 @@ class TestCase(models.Model):
 		return self.title
 
 	def get_tags(self):
-		return ", ".join([t.title for t in self.tag.all()])
+		tags = [t.title for t in self.tag.all()]
+		return tags
+
 
 	def get_conditions(self):
+		condition = []
+		condition.append(self.condition.get_screen)
 		return
 
-
+	def get_project(self):
+		return self.project
 
 
 
