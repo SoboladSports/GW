@@ -28,7 +28,7 @@ def test_case_detail(request, slug):
 
     testcase = get_object_or_404(TestCase, slug=slug)
     form = TestCaseView(instance=testcase)
-    
+
     context = {
 
         'TestCase' : testcase,
@@ -54,16 +54,16 @@ def project_detail(request, slug):
 
 
 def search(request):
-    template = 'testcase/test_case_list.html'
+    template = 'testcase/test_case_list_admin.html'
 
-    query = request.GET.get('q')
+    query = request.GET.get('qText')
 
     if query:
         results = TestCase.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
     else:
         results = TestCase.objects.all()
 
-    pages = pagination(request, results, num=1)
+    pages = pagination(request, results, num=5)
 
     context = {
         'items': pages[0],

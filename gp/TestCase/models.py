@@ -82,7 +82,7 @@ class Condition(models.Model):
 	action = models.ForeignKey(Action, on_delete = models.CASCADE)
 	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE, blank = True, null = True)
 	Project = models.ForeignKey(Project, default = 1, on_delete = models.CASCADE)
-	
+
 	def save(self, *args, **kwargs):
 		super(Condition, self).save(*args, **kwargs)
 
@@ -143,6 +143,7 @@ class TestCase(models.Model):
 			('Detailed', 'Detailed'),
 		)
 	title = models.CharField(max_length = 250)
+	project = models.ForeignKey(Project, on_delete = models.CASCADE, blank = True, null = True)
 	description = models.TextField()
 	condition = models.ManyToManyField(Condition)
 	teststep = models.ManyToManyField(TestStep)
@@ -151,7 +152,6 @@ class TestCase(models.Model):
 	created = models.DateTimeField(auto_now_add = True)
 	edited = models.DateTimeField(auto_now = True)
 	slug = models.SlugField(max_length = 250, unique = True)
-	project = models.ForeignKey(Project, on_delete = models.CASCADE, blank = True, null = True)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
@@ -168,7 +168,7 @@ class TestCase(models.Model):
 	def get_conditions(self):
 		condition = []
 		condition.append(self.condition.get_screen)
-		return
+		return condition
 
 	def get_project(self):
 		return self.project

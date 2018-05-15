@@ -13,9 +13,30 @@
 			<th scope="col"> Tags </th>
 			<th scope="col"> Edit </th>
 			<th scope="col"> Delete </th>
+			<th scope = "col"> <th>
 		</tr>
-
 	</thead>
+	
+	<form method="GET" action ="{% url 'TestCase:search' %}">
+		<tr>
+			<th> </th>
+			<th> </th>
+			<th>
+				<input name="qText" value = "{{request.GET.qText}}" placeholder="search...">	
+			</th>
+			<th> </th>
+			<th> </th>	
+			<th> </th>
+			<th> </th>
+			<th> </th>
+			<th> 
+				<button class="btn btn-success" type="submit">
+					Search
+				</button>
+			</th>
+		</tr>
+	</form>
+
 	<tbody>
 	{% for item in items %}
 		<tr>
@@ -26,6 +47,7 @@
 			<td> {{item.get_tags}} </td>
 			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
 			<td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
+
 		</tr>		
 	{% endfor %}
 	</tbody>
