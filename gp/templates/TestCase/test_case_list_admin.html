@@ -7,8 +7,10 @@
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col"> ID </th>
+			<th scope="col"> Project </th>
 			<th scope="col"> TC Title </th>
 			<th scope="col"> Priority </th>
+			<th scope="col"> Tags </th>
 			<th scope="col"> Edit </th>
 			<th scope="col"> Delete </th>
 		</tr>
@@ -18,8 +20,10 @@
 	{% for item in items %}
 		<tr>
 			<td> {{item.pk}} </td>
-			<td> {{item.title}} </td>
+			<td> <a href= "{% url 'TestCase:project_detail' slug=item.project %}" > {{item.project}} </a> </td>
+			<td> {{item.title|truncatechars:20}} </td>
 			<td> {{item.priority}} </td>
+			<td> {{item.get_tags}} </td>
 			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
 			<td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
 		</tr>		

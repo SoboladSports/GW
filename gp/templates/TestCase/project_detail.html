@@ -10,8 +10,10 @@
 
 {% for item in items %}
 
-<h2> <a href="{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title}} </a>  </h2>
-{{item.description|truncatechars:50}}
+	<h2> <a href="{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title}} </a>  </h2>
+	{{item.description|truncatechars:50}}
+
+
 {% endfor %}
 
 {% include 'pagination.html' %}

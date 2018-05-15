@@ -99,6 +99,9 @@ class Tag(models.Model):
 	def __str__(self):
 		return self.title
 
+	 #class Meta:
+    #	ordering = ('title',)
+
 
 
 
@@ -139,3 +142,14 @@ class TestCase(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	def get_tags(self):
+		return ", ".join([t.title for t in self.tag.all()])
+
+	def get_conditions(self):
+		return
+
+
+
+
+
