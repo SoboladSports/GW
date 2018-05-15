@@ -3,9 +3,23 @@ from django.template.defaultfilters import slugify
 
 
 
+class Project(models.Model):
+	title = models.CharField(max_length = 250, blank = True, null = True, default = 'example')
+	slug = models.SlugField(max_length = 250, unique = True, default = 'example')
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Project, self).save(*args, **kwargs)
+
+	def __str__(self):
+		return self.title
+
+
 
 class Screen(models.Model):
 	title = models.CharField(max_length = 250)
+	Project = models.ForeignKey(Project, default = 1, on_delete = models.CASCADE)
+	deeplink = models.CharField(max_length = 250, blank = True, null = True, default = 'deeplink_dflt')
 
 	def save(self, *args, **kwargs):
 		super(Screen, self).save(*args, **kwargs)
@@ -19,7 +33,9 @@ class Screen(models.Model):
 class Element(models.Model):
 	title = models.CharField(max_length = 250)
 	screen = models.ManyToManyField(Screen)
-	
+	Project = models.ForeignKey(Project, default = 1, on_delete = models.CASCADE)
+	locator = models.CharField(max_length = 250, blank = True, null = True, default = 'locator_dflt')
+
 	def save(self, *args, **kwargs):
 		super(Element, self).save(*args, **kwargs)
 
@@ -65,7 +81,8 @@ class Condition(models.Model):
 	element = models.ForeignKey(Element, on_delete = models.CASCADE, blank = True, null = True)
 	action = models.ForeignKey(Action, on_delete = models.CASCADE)
 	testdata = models.ForeignKey(TestData, on_delete = models.CASCADE, blank = True, null = True)
-
+	Project = models.ForeignKey(Project, default = 1, on_delete = models.CASCADE)
+	
 	def save(self, *args, **kwargs):
 		super(Condition, self).save(*args, **kwargs)
 
@@ -85,6 +102,7 @@ class TestStep(models.Model):
 	title = models.CharField(max_length = 250, blank = True, null = True, default='somevalue')
 	condition = models.ForeignKey(Condition, on_delete = models.CASCADE)
 	expresult = models.TextField()
+	Project = models.ForeignKey(Project, default = 1, on_delete = models.CASCADE)
 
 	def save(self, *args, **kwargs):
 		super(TestStep, self).save(*args, **kwargs)
@@ -113,16 +131,6 @@ class Tag(models.Model):
 
 
 
-class Project(models.Model):
-	title = models.CharField(max_length = 250, blank = True, null = True, default = 'example')
-	slug = models.SlugField(max_length = 250, unique = True, default = 'example')
-
-	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
-		super(Project, self).save(*args, **kwargs)
-
-	def __str__(self):
-		return self.title
 
 
 		
