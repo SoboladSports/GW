@@ -21,7 +21,7 @@
 		<tr>
 			<td> {{item.pk}} </td>
 			<td> <a href= "{% url 'TestCase:project_detail' slug=item.project %}" > {{item.project}} </a> </td>
-			<td> {{item.title|truncatechars:20}} </td>
+			<td> <a href = "{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title|truncatechars:20}} </a> </td>
 			<td> {{item.priority}} </td>
 			<td> {{item.get_tags}} </td>
 			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
