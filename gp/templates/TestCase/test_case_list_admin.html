@@ -4,6 +4,26 @@
 {% block content %}
 
 <table class="table">
+	<thead>
+		<form method="GET" action ="{% url 'TestCase:search' %}">
+			<tr>
+				<th scope ="col"> id </th>
+				<th scope ="col"> project </th>
+				<th scope ="col">
+					<input name="qText" value = "{{request.GET.qText}}" placeholder="search...">
+				</th>
+				<th scope ="col"> priority </th>
+				<th scope ="col"> tags[] </th>
+				<th scope ="col">
+					<button class="btn btn-success" type="submit">
+						Search
+					</button>
+				</th>
+				<th scope ="col"> </th>
+			</tr>
+		</form>
+	</thead>
+
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col"> ID </th>
@@ -13,29 +33,10 @@
 			<th scope="col"> Tags </th>
 			<th scope="col"> Edit </th>
 			<th scope="col"> Delete </th>
-			<th scope = "col"> <th>
 		</tr>
 	</thead>
 	
-	<form method="GET" action ="{% url 'TestCase:search' %}">
-		<tr>
-			<th> </th>
-			<th> </th>
-			<th>
-				<input name="qText" value = "{{request.GET.qText}}" placeholder="search...">	
-			</th>
-			<th> </th>
-			<th> </th>	
-			<th> </th>
-			<th> </th>
-			<th> </th>
-			<th> 
-				<button class="btn btn-success" type="submit">
-					Search
-				</button>
-			</th>
-		</tr>
-	</form>
+
 
 	<tbody>
 	{% for item in items %}

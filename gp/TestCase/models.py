@@ -13,10 +13,24 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    def get_title(self):
+        return self.title
+
+    def get_slug(self):
+        return self.slug
+
+    def get_project(self):
+        result = {
+            'title': self.get_title(),
+            'slug': self.get_slug(),
+        }
+
+        return result
+
 
 class Screen(models.Model):
     title = models.CharField(max_length=250)
-    Project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
     deeplink = models.CharField(max_length=250, blank=True, null=True, default='deeplink_dflt')
 
     def save(self, *args, **kwargs):
@@ -25,11 +39,28 @@ class Screen(models.Model):
     def __str__(self):
         return self.title
 
+    def get_title(self):
+        return self.title
+
+    def get_project(self):
+        return self.project
+
+    def get_deeplink(self):
+        return self.deeplink
+
+    def get_screen(self):
+        result = {
+            'title': self.get_title(),
+            'project': self.get_project(),
+            'deeplink': self.get_deeplink(),
+        }
+        return result
+
 
 class Element(models.Model):
     title = models.CharField(max_length=250)
     screen = models.ManyToManyField(Screen)
-    Project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
     locator = models.CharField(max_length=250, blank=True, null=True, default='locator_dflt')
 
     def save(self, *args, **kwargs):
@@ -42,6 +73,24 @@ class Element(models.Model):
         screens = [t.title for t in self.screen.all()]
         return screens
 
+    def get_title(self):
+        return self.title
+
+    def get_project(self):
+        return self.project
+
+    def get_locator(self):
+        return self.locator
+
+    def get_element(self):
+        result = {
+            'title': self.get_title(),
+            'screen': self.get_screen(),
+            'project': self.get_project(),
+            'locator': self.get_locator(),
+        }
+        return result
+
 
 class TestData(models.Model):
     data = models.CharField(max_length=250)
@@ -51,6 +100,15 @@ class TestData(models.Model):
 
     def __str__(self):
         return self.data
+
+    def get_data(self):
+        return self.data
+
+    def get_testdata(self):
+        result = {
+            'testdata': self.get_data(),
+        }
+        return result
 
 
 class Action(models.Model):
@@ -62,6 +120,15 @@ class Action(models.Model):
     def __str__(self):
         return self.title
 
+    def get_title(self):
+        return self.title
+
+    def get_action(self):
+        result = {
+            'title': self.get_title(),
+        }
+        return result
+
 
 class Condition(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='somevalue')
@@ -69,7 +136,7 @@ class Condition(models.Model):
     element = models.ForeignKey(Element, on_delete=models.CASCADE, blank=True, null=True)
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     testdata = models.ForeignKey(TestData, on_delete=models.CASCADE, blank=True, null=True)
-    Project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(Condition, self).save(*args, **kwargs)
@@ -84,12 +151,38 @@ class Condition(models.Model):
     def get_screen(self):
         return self.screen
 
+    def get_title(self):
+        return self.title
+
+    def get_element(self):
+        return self.element
+
+    def get_action(self):
+        return self.action
+
+    def get_testdata(self):
+        return self.testdata
+
+    def get_project(self):
+        return self.project
+
+    def get_condition(self):
+        result = {
+            'title': self.get_title(),
+            'screen': self.get_screen(),
+            'element': self.get_element(),
+            'action': self.get_action(),
+            'testdata': self.get_testdata(),
+            'project': self.get_project(),
+        }
+        return result
+
 
 class TestStep(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='somevalue')
     condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
     expresult = models.TextField()
-    Project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(TestStep, self).save(*args, **kwargs)
@@ -99,6 +192,26 @@ class TestStep(models.Model):
             return str(str(self.condition) + ' ' + str(self.expresult)).replace('None', '')
         else:
             return self.title
+
+    def get_title(self):
+        return self.title
+
+    def get_condition(self):
+        return self.condition
+
+    def get_expresult(self):
+        return self.expresult
+
+    def get_project(self):
+        return self.project
+
+    def get_teststep(self):
+        result = {
+            'title': self.get_title(),
+            'condition': self.get_condition(),
+            'expresult': self.get_expresult(),
+            'project': self.get_project(),
+        }
 
 
 class Tag(models.Model):
@@ -110,10 +223,16 @@ class Tag(models.Model):
     def __str__(self):
         return self.title
 
-    # class Meta:
+    def get_title(self):
+        return self.get_tag()
+
+    def get_tag(self):
+        result = {
+            'title': self.get_title(),
+        }
+        return result
 
 
-#	ordering = ('title',)
 
 
 class TestCase(models.Model):
@@ -140,14 +259,49 @@ class TestCase(models.Model):
     def __str__(self):
         return self.title
 
+    def get_title(self):
+        return self.title
+
+    def get_project(self):
+        return self.project
+
+    def get_description(self):
+        return self.description
+
+    def get_slug(self):
+        return self.slug
+
+    def get_created(self):
+        return self.created
+
+    def get_edited(self):
+        return self.edited
+
+    def get_priority(self):
+        return self.priority
+
     def get_tags(self):
         tags = [t.title for t in self.tag.all()]
         return tags
 
     def get_conditions(self):
-        condition = []
-        condition.append(self.condition.get_screen)
-        return condition
+        conditions = [t.id for t in self.condition.all()]
+        return conditions
 
-    def get_project(self):
-        return self.project
+    def get_steps(self):
+        steps = [t.id for t in self.teststep.all()]
+        return steps
+
+    def get_testcase(self):
+        result = {
+            'title': self.get_title(),
+            'slug': self.get_slug(),
+            'project': self.get_project(),
+            'description': self.get_description(),
+            'condition': self.get_conditions(),
+            'teststep': self.get_teststeps(),
+            'tag': self.get_tags(),
+            'created': self.get_created(),
+            'edited': self.get_edited(),
+        }
+        return result
