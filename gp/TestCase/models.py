@@ -288,7 +288,7 @@ class TestCase(models.Model):
         conditions = [t.id for t in self.condition.all()]
         return conditions
 
-    def get_steps(self):
+    def get_teststeps(self):
         steps = [t.id for t in self.teststep.all()]
         return steps
 
