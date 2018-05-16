@@ -31,8 +31,8 @@ def test_case_detail(request, slug):
 
     context = {
 
-        'TestCase' : testcase,
-        'form' : form,
+        'TestCase': testcase,
+        'form': form,
     }
 
     return render(request, template, context)

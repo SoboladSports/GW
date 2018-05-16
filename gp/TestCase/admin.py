@@ -3,15 +3,16 @@ from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData,
 
 
 class TestCaseAdmin(admin.ModelAdmin):
-	exclude = ('slug',)
-	list_display = ('title', 'priority', 'created', 'edited', )
-	list_filter = ('priority', )
-	search_fields = ('title', 'description')
+    exclude = ('slug',)
+    list_display = ('title', 'priority', 'created', 'edited',)
+    list_filter = ('priority',)
+    search_fields = ('title', 'description')
+
 
 class ProjectAdmin(admin.ModelAdmin):
-	exclude = ('slug',)
-		
-		
+    exclude = ('slug',)
+
+
 admin.site.register(Action)
 admin.site.register(Condition)
 admin.site.register(Element)
