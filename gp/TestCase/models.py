@@ -6,7 +6,6 @@ class Project(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='example')
     slug = models.SlugField(max_length=250, unique=True, default='example')
 
-	def __str__(self):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Project, self).save(*args, **kwargs)
