@@ -7,8 +7,10 @@
 	<thead>
 		<form method="GET" action ="{% url 'TestCase:search' %}">
 			<tr>
-				<th scope ="col"> id </th>
-				<th scope ="col"> project </th>
+				<th scope ="col"></th>
+				<th scope ="col">
+                    <input name="qProject" value = "{{request.GET.qProject}}" placeholder="project...">
+                </th>
 				<th scope ="col">
 					<input name="qText" value = "{{request.GET.qText}}" placeholder="search...">
 				</th>
