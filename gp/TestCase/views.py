@@ -55,13 +55,84 @@ def project_detail(request, slug):
 
 def search(request):
     template = 'testcase/test_case_list_admin.html'
+    testcase = TestCase.objects.all()
 
-    query = request.GET.get('qText')
+#   query parsing
+    queryProject = request.GET.get('qProject')
+    queryText = request.GET.get('qText')
+    queryPriority = request.GET.get('qPriority')
+    queryTags = request.GET.get('qTags')
 
-    if query:
-        results = TestCase.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+    query = queryTags or queryProject or queryText or queryPriority
+    
+
+#   Project query part
+#   Findning all the projects
+    projects = Project.objects.all()
+
+#   Checking, if project from query exists
+#   If true -> saving the id of this project in project_id var
+    project_id = 0
+    if queryProject:
+        for p in projects:
+            if p.get_title() == queryProject:
+                project_id = p.id
+
+#   creating the result part for the project query
+    resultsProject = []
+#   if the project doesn't exist: result = []
+    if (not project_id and queryProject != ''):
+        resultsProject = []
+#   trying to find some testcases with existing project_id otherwise
+    elif queryProject:
+        for t in testcase:
+            if t.get_project().id == project_id:
+                resultsProject.append(t)
+#   if project query is '', result = all()
     else:
-        results = TestCase.objects.all()
+        resultsProject = TestCase.objects.all()
+
+
+
+
+#   Text query part
+#   Finding all the projects with this text in title or in description
+    if queryText:
+        resultsText = TestCase.objects.filter(Q(title__icontains=queryText) | Q(description__icontains=queryText))
+#   If query = '', result = all()
+    else:
+        resultsText = TestCase.objects.all()
+
+
+
+
+#   Priority query part
+    resultsPriority = []
+    if queryPriority:
+        for t in testcase:
+            if (t.get_priority() == queryPriority):
+                resultsPriority.append(t)
+#   If query = '', result = all()
+    else:
+        resultsPriority = TestCase.objects.all()
+
+
+
+
+#   Tags query part
+    resultsTag = []
+    if queryTags:
+
+        tmpQueryTags = queryTags.replace(' ', '').split(',')
+        for t in testcase:
+            for tmp in tmpQueryTags:
+                if (set(tmpQueryTags).issubset(set(t.get_tags()))):
+                    resultsTag.append(t)
+    else:
+        resultsTag = TestCase.objects.all()
+
+
+    results = list(set(resultsText) & set(resultsProject) & set(resultsPriority) & set(resultsTag))
 
     pages = pagination(request, results, num=5)
 
@@ -69,6 +140,10 @@ def search(request):
         'items': pages[0],
         'page_range': pages[1],
         'query': query,
+        'queryText': queryText,
+        'queryProject': queryProject,
+        'queryTags': queryTags,
+        'queryPriority': queryPriority,
     }
 
     return render(request, template, context)

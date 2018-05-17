@@ -6,7 +6,7 @@ class TestCaseAdmin(admin.ModelAdmin):
     exclude = ('slug',)
     list_display = ('title', 'priority', 'created', 'edited',)
     list_filter = ('priority',)
-    search_fields = ('title', 'description')
+    search_fields = ('title', 'description', 'project')
 
 
 class ProjectAdmin(admin.ModelAdmin):

@@ -14,8 +14,12 @@
 				<th scope ="col">
 					<input name="qText" value = "{{request.GET.qText}}" placeholder="search...">
 				</th>
-				<th scope ="col"> priority </th>
-				<th scope ="col"> tags[] </th>
+				<th scope ="col"> 
+					<input name="qPriority" value = "{{request.GET.qPriority}}" placeholder="priority...">
+				</th>
+				<th scope ="col">
+					<input name="qTags" value = "{{request.GET.qTags}}" placeholder="tags...">
+				</th>
 				<th scope ="col">
 					<button class="btn btn-success" type="submit">
 						Search
