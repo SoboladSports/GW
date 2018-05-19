@@ -62,8 +62,6 @@ def search(request):
     queryText = request.GET.get('qText')
     queryPriority = request.GET.get('qPriority')
     queryTags = request.GET.get('qTags')
-
-    query = queryTags or queryProject or queryText or queryPriority
     
 
 #   Project query part
@@ -139,7 +137,6 @@ def search(request):
     context = {
         'items': pages[0],
         'page_range': pages[1],
-        'query': query,
         'queryText': queryText,
         'queryProject': queryProject,
         'queryTags': queryTags,
