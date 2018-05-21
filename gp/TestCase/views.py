@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
 
-from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
+from .models import Project, Screen, Element, TestData, Action, Condition, Step, TestStep, Tag, TestCase, Cases, TestCycle
 from .forms import TestCaseForm, TestCaseView
 
 

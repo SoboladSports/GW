@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project
+from .models import Action, Condition, Element, Screen, Tag, TestCase, TestData, TestStep, Project, Step, Cases, TestCycle
 
 
 class TestCaseAdmin(admin.ModelAdmin):
@@ -22,3 +22,6 @@ admin.site.register(TestStep)
 admin.site.register(TestData)
 admin.site.register(TestCase, TestCaseAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(Step)
+admin.site.register(Cases)
+admin.site.register(TestCycle)

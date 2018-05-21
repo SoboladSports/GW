@@ -178,14 +178,14 @@ class Condition(models.Model):
         return result
 
 
-class TestStep(models.Model):
+class Step(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='somevalue')
     condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
     expresult = models.TextField()
     project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        super(TestStep, self).save(*args, **kwargs)
+        super(Step, self).save(*args, **kwargs)
 
     def __str__(self):
         if (self.title == '' or self.title == 'somevalue'):
@@ -214,6 +214,17 @@ class TestStep(models.Model):
         }
 
 
+class TestStep(models.Model):
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, blank=True, null=True)
+    number = models.BigIntegerField(default=1)
+
+    def __str__(self):
+        return str(str(self.number) + ' ' + str(self.step.__str__()))
+
+    def save(self, *args, **kwargs):
+        super(TestStep, self).save(*args, **kwargs)
+
+
 class Tag(models.Model):
     title = models.CharField(max_length=250)
 
@@ -231,8 +242,6 @@ class Tag(models.Model):
             'title': self.get_title(),
         }
         return result
-
-
 
 
 class TestCase(models.Model):
@@ -305,3 +314,42 @@ class TestCase(models.Model):
             'edited': self.get_edited(),
         }
         return result
+
+
+class Cases(models.Model):
+    testcase = models.ForeignKey(TestCase, on_delete=models.CASCADE, blank=True, null=True)
+    check = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    edited = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        super(Cases, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.testcase.__str__())
+
+class TestCycle(models.Model):
+    PRIORITY_CHOICES = (
+        ('Passed', 'Passed'),
+        ('Failed', 'Failed'),
+        ('Under Construction', 'Under Construction'),
+        ('In progress', 'In progress'),
+    )
+    title = models.CharField(max_length=250)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
+    description = models.TextField(default="Some Text")
+    slug = models.SlugField(max_length=250, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    edited = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=30, default='Under Construction', choices=PRIORITY_CHOICES)
+    tag = models.ManyToManyField(Tag)
+    rcnumber = models.CharField(max_length=10)
+    testcase = models.ManyToManyField(Cases)
+
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(TestCycle, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
