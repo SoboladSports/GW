@@ -1,8 +1,65 @@
 {% extends 'base.html' %}
 
 
+
 {% block content %}
-<h1> {{testcycle.title}} {% if testcycle.status=="Passed" %} <font color="green"> {% elif testcycle.status=="Failed" %} <font color="red"> {% else %} <font color="black"> {{testcycle.status}} </font> </h1> 
+<table class="table">
+
+<tr>
+    <td align="center">
+        <h1>
+        <samp>
+        {{testcycle.title}}:
+        </samp> 
+    {% if testcycle.status == "Passed" %}
+        <font color="green">
+    {% elif testcycle.status == "Failed" %}
+        <font color="red"> 
+    {% elif testcycle.status == "In progress" %}
+        <font color="darkorange">
+    {% else %} 
+        <font color="black">
+    {% endif %} <samp>{{testcycle.status}}</samp>
+    </font>
+
+    </h1>
+    </td>
+
+</tr>
+<tr>
+    {% if testcycle.status == "Under Construction" %}
+        <td align="center">
+        <button type="button" class="btn btn-primary">
+            Start progress
+        </button>
+        <button type="button" class="btn btn-warning">
+            Edit
+        </button>
+        </td>
+    {% elif testcycle.status == "Failed" %}
+        <td align="center">
+        <button type="button" class="btn btn-primary">
+            Rerun
+        </button>
+        </td>
+    {% elif testcycle.status == "In progress" %}
+        <td align="center">
+        <button type="button" class="btn btn-primary">
+            Stop progress
+        </button>
+        <button type="button" class="btn btn-success">
+            Pass
+        </button>
+        <button type="button" class="btn btn-danger">
+            Fail
+        </button>
+        </td>
+    {% endif %}
+
+</tr>
+
+</table>
+
 <table class="table">
     <thead class="thead-dark">
         <tr>
