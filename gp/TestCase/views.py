@@ -5,7 +5,7 @@ from django.contrib import messages
 # Create your views here.
 
 from .models import Project, Screen, Element, TestData, Action, Condition, Step, TestStep, Tag, TestCase, Cases, TestCycle
-from .forms import TestCaseForm, TestCaseView
+#from .forms import TestCaseForm, TestCaseView
 
 
 def test_case_list(request):
@@ -23,19 +23,38 @@ def test_case_list(request):
     return render(request, template, context)
 
 
+
+
+
+
+
+
+
+
 def test_case_detail(request, slug):
     template = 'testcase/new_test_case.html'
 
     testcase = get_object_or_404(TestCase, slug=slug)
-    form = TestCaseView(instance=testcase)
 
     context = {
-
-        'TestCase': testcase,
-        'form': form,
+        'testcase': testcase,
     }
 
     return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def project_detail(request, slug):

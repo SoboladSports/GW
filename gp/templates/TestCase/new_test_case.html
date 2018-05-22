@@ -1,7 +1,35 @@
 {% extends 'base.html' %}
 
 
+
+
 {% block content %}
+<style>
+
+.numbered-list {
+  counter-reset: tr;
+  list-style-type: none;
+  font-size: 14px;
+  line-height: 18px;
+  padding-left: 10px;
+}
+
+.numbered-list tr {
+    position: relative;
+    padding: 5px 0 5px 30px;
+}
+
+.numbered-list td:first-child:before {
+      content: counter(tr);
+      counter-increment: tr;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      text-align: center;
+}
+
+
+</style>
 <div class="offset-3 col-md-6">
 
 {% with url_name=request.resolver_match.url_name %}
@@ -29,21 +57,73 @@
 
 
 
-
+<!-- testcase -->
 <form method="post"> {% csrf_token %}
-    <div class="form-group">
-    {% for field in form %}
-    	<hr>
-    	<h4> {{field.label_tag}} </h4>
-    	{% if field == 'project' %}
-    		{{field.get_project}}
-    	{% else %}
-    		{{field}}
-    	{% endif %}
-    {% endfor %}
-	</div>
+        <div align="left">
+            <hr>
+            Title:<br>
+            <input type="text" name="title" value="{{testcase.get_title}}" disabled>
+            <hr>
+            Project:<br>
+            <select disabled name="Project">
+                <option selected>{{testcase.get_project}}</option>
+            </select>
+            <hr>
+            Priority:<br>
+            <select disabled name="Project">
+                <option selected>{{testcase.get_priority}}</option>
+            </select>
+            <hr>
+            Description:<br>
+            <textarea rows="4" cols="50" name="description" disabled>
+                {{testcase.get_description}}
+            </textarea>
+            <hr>
 
 
+            <table class="table numbered-list" width="100%">
+                <tr>
+                    <th scope="col"> # </th>
+                    <th scope="col"> Screen: </th>
+                    <th scope="col"> Action: </th>
+                    <th scope="col"> Element: </th>
+                    <th scope="col"> TestData: </th>
+                </tr>
+                Condtitions:<br>
+                {% for c in testcase.get_conditions %}
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <input type="text" value="{{c.get_screen}}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" value="{{c.get_action}}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" value="{{c.get_element}}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" style='width:100%' value="{{c.get_testdata}}" disabled>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <hr>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            Tags:<br>
+            {% for t in testcase.get_tags %}
+                <input type="text"  style='width:auto' value="{{t}}" disabled>
+            {% endfor %}
+        </div>
 
 
 

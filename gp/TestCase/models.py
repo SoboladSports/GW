@@ -294,7 +294,7 @@ class TestCase(models.Model):
         return tags
 
     def get_conditions(self):
-        conditions = [t.id for t in self.condition.all()]
+        conditions = [t for t in self.condition.all()]
         return conditions
 
     def get_teststeps(self):

@@ -14,10 +14,14 @@ class Project(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='example')
     slug = models.SlugField(max_length=250, unique=True, default='example')
 
+
+
 class Screen(models.Model):
     title = models.CharField(max_length=250)
     project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
     deeplink = models.CharField(max_length=250, blank=True, null=True, default='deeplink_dflt')
+
+
 
 class Element(models.Model):
     title = models.CharField(max_length=250)
@@ -25,11 +29,15 @@ class Element(models.Model):
     project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
     locator = models.CharField(max_length=250, blank=True, null=True, default='locator_dflt')
 
+
 class TestData(models.Model):
     data = models.CharField(max_length=250)
 
+
 class Action(models.Model):
     title = models.CharField(max_length=250)
+
+
 
 class Condition(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='somevalue')
@@ -39,18 +47,18 @@ class Condition(models.Model):
     testdata = models.ForeignKey(TestData, on_delete=models.CASCADE, blank=True, null=True)
     project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
 
+
 class Step(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, default='somevalue')
     condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
     expresult = models.TextField()
     project = models.ForeignKey(Project, default=1, on_delete=models.CASCADE)
 
+
 class TestStep(models.Model):
     step = models.ForeignKey(Step, on_delete=models.CASCADE, blank=True, null=True)
     number = models.BigIntegerField(default=1)
 
-class Tag(models.Model):
-    title = models.CharField(max_length=250)
 
 class TestCase(models.Model):
     PRIORITY_CHOICES = (
@@ -69,11 +77,18 @@ class TestCase(models.Model):
     edited = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=250, unique=True)
 
+
 class Cases(models.Model):
+    PRIORITY_CHOICES = (
+        ('Passed', 'Passed'),
+        ('Failed', 'Failed'),
+        ('To be checked', 'To be checked'),
+    )
     testcase = models.ForeignKey(TestCase, on_delete=models.CASCADE, blank=True, null=True)
     check = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=30, default='To be checked', choices=PRIORITY_CHOICES)
 
 
 class TestCycle(models.Model):
