@@ -317,10 +317,16 @@ class TestCase(models.Model):
 
 
 class Cases(models.Model):
+    PRIORITY_CHOICES = (
+        ('Passed', 'Passed'),
+        ('Failed', 'Failed'),
+        ('To be checked', 'To be checked'),
+    )
     testcase = models.ForeignKey(TestCase, on_delete=models.CASCADE, blank=True, null=True)
     check = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=30, default='To be checked', choices=PRIORITY_CHOICES)
 
     def save(self, *args, **kwargs):
         super(Cases, self).save(*args, **kwargs)
