@@ -34,11 +34,11 @@
 
 {% with url_name=request.resolver_match.url_name %}
 	{% if url_name == 'new_test_case' %}
-		<h2> Add a new test-case </h2>
+		<h2> Add a new test-case: </h2>
 	{% elif url_name == 'edit_test_case' %}
-		<h2> Edit test-case {{testcase}} </h2>
+		<h2> Edit test-case: {{testcase}} </h2>
 	{% elif url_name == 'delete_test_case' %}
-		<h2> Delete test-case {{testcase}} </h2>
+		<h2> Delete test-case: {{testcase}} </h2>
 	{% else %}
 		<h2> Test-Case View </h2>
 	{% endif %}
@@ -64,79 +64,228 @@
             Title:<br>
             <input type="text" name="title" value="{{testcase.get_title}}" disabled>
             <hr>
-            Project:<br>
-            <select disabled name="Project">
-                <option selected>{{testcase.get_project}}</option>
-            </select>
-            <hr>
-            Priority:<br>
-            <select disabled name="Project">
-                <option selected>{{testcase.get_priority}}</option>
-            </select>
+            <table class="table">
+                <tr>
+                    <td>
+                    Project:<br>
+                    <select disabled name="Project">
+                        <option selected>{{testcase.get_project}}</option>
+                    </select>
+                    </td>
+                    <td>
+                    Priority:<br>
+                    <select disabled name="Project">
+                        <option selected>{{testcase.get_priority}}</option>
+                    </select>
+                    </td>
+                </tr>
+            </table>
             <hr>
             Description:<br>
-            <textarea rows="4" cols="50" name="description" disabled>
+            <textarea rows="2" cols="50" name="description" disabled>
                 {{testcase.get_description}}
             </textarea>
             <hr>
 
 
+            Condtitions:<br>
             <table class="table numbered-list" width="100%">
                 <tr>
                     <th scope="col"> # </th>
-                    <th scope="col"> Screen: </th>
-                    <th scope="col"> Action: </th>
-                    <th scope="col"> Element: </th>
-                    <th scope="col"> TestData: </th>
+                    <th scope="col"> Screen </th>
+                    <th scope="col"> Action </th>
+                    <th scope="col"> Element </th>
+                    <th scope="col"> TestData </th>
+                    {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'edit_test_case' %}
+                            <th scope="col">  </th>
+                        {% endif %}
+                    {% endwith %}
                 </tr>
-                Condtitions:<br>
                 {% for c in testcase.get_conditions %}
+                    <tr>
+                        <td width="5%">
+
+                        </td>
+                        <td width="20%">
+                            {{c.get_screen}}
+                        </td>
+                        <td width="20%">
+                            {{c.get_action}}
+                        </td>
+                        <td width="20%">
+                            {% if c.get_element %}
+                                {{c.get_element}}
+                            {% endif %}
+                        </td>
+                        <td width="35%">
+                            {% if c.get_testdata %}
+                                {{c.get_testdata}}
+                            {% endif %}
+                        </td>
+                        {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'edit_test_case' %}
+                                <td>
+                                    <button type="submit" class="btn btn-danger" > Delete </button>
+                                </td>
+                            {% endif %}
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+                {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'edit_test_case' %}
+                            <td>
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Screen...">
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Action...">
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Element...">
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Testdata...">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </td>
+                        {% endif %}
+                {% endwith %}
+            </table>
+            <hr>
+            Steps:<br>
+            <table class="table numbered-list" width="100%">
+                <tr>
+                    <th scope="col"> # </th>
+                    <th scope="col"> Screen </th>
+                    <th scope="col"> Action </th>
+                    <th scope="col"> Element </th>
+                    <th scope="col"> TestData </th>
+                    <th scope="col"> Expected result </th>
+                    {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'test_case_detail_in_progress' %}
+                            <th scope="col"> Status </th>
+                        {% elif url_name == 'edit_test_case' %}
+                            <th scope="col"> </th>
+                        {% endif %}
+
+                    {% endwith %}
+                </tr>
+                {% for t in testcase.get_teststeps %}
                     <tr>
                         <td>
 
                         </td>
                         <td>
-                            <input type="text" value="{{c.get_screen}}" disabled>
+                            {{t.get_step.get_condition.get_screen}}
                         </td>
                         <td>
-                            <input type="text" value="{{c.get_action}}" disabled>
+                            {{t.get_step.get_condition.get_action}}
                         </td>
                         <td>
-                            <input type="text" value="{{c.get_element}}" disabled>
+                            {% if t.get_step.get_condition.get_element %}
+                                {{t.get_step.get_condition.get_element}}
+                            {% endif %}
                         </td>
                         <td>
-                            <input type="text" style='width:100%' value="{{c.get_testdata}}" disabled>
+                            {% if t.get_step.get_conditions.get_testdata %}
+                                {{t.get_step.get_conditions.get_testdata}}
+                            {% endif %}
                         </td>
+                        <td>
+                            {{t.get_step.get_expresult}}
+                        </td>
+                        {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'test_case_detail_in_progress' %}
+                                <td>
+                                    <select>
+                                      <option value="passed">Passed</option>
+                                      <option value="failed">Failed</option>
+                                      <option value="to be checked" selected>To be checked</option>
+                                    </select>
+                                </td>
+                            {% elif url_name == 'edit_test_case' %}
+                                <td>
+                                    <button type="submit" class="btn btn-danger" > Delete </button>
+                                </td>
+                            {% endif %}
+                        {% endwith %}
                     </tr>
-                {% endfor %}
+                    {% endfor %}
+                       {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'edit_test_case' %}
+                                <td>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Screen...">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Action...">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Element...">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Testdata...">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Expected Result...">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-success">Add</button>
+                                </td>
+                            {% endif %}
+                    {% endwith %}
             </table>
             <hr>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-
             Tags:<br>
-            {% for t in testcase.get_tags %}
-                <input type="text"  style='width:auto' value="{{t}}" disabled>
-            {% endfor %}
+            <table class="table">
+                <tr>
+                    {% for t in testcase.get_tags %}
+                        <td>
+                            {{t}}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
+            <table>
+                {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'edit_test_case' %}
+                               <tr>
+                                    <td>
+                                        <input type="text" placeholder="Expected Result...">
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success">Add</button>
+                                    </td>
+                               </tr>
+                            {% endif %}
+                    {% endwith %}
+            </table>
         </div>
 
 
-
-	{% with url_name=request.resolver_match.url_name %}
-		{% if url_name == 'new_test_case' %}
-			<button type="submit" class="btn btn-success" > Save </button>
-		{% elif url_name == 'edit_test_case' %}
-			<button type="submit" class="btn btn-warning" > Save </button>
-		{% elif url_name == 'delete_test_case' %}
-			<button type="submit" class="btn btn-danger" > Delete </button>
-		{% else %}
-		{% endif %}
-	{% endwith %}
+<br><br>
+    <div align="center">
+        <h1>
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name == 'new_test_case' or url_name == 'test_case_detail_in_progress' %}
+            <button type="submit" class="btn btn-success">Save</button>
+            {% elif url_name == 'edit_test_case' %}
+                <button type="submit" class="btn btn-warning"> Save </button>
+            {% elif url_name == 'delete_test_case' %}
+                <button type="submit" class="btn btn-danger"> Delete </button>
+            {% else %}
+            {% endif %}
+        {% endwith %}
+        </h1>
+    </div>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
 
 </form>
 

@@ -191,7 +191,6 @@ def edit_test_case(request, pk):
     testcase = get_object_or_404(TestCase, pk=pk)
 
     if request.method == "POST":
-        form = TestCaseForm(request.POST, instance=testcase)
         try:
             if form.is_valid():
                 form.save()
@@ -199,10 +198,8 @@ def edit_test_case(request, pk):
         except Exception as e:
             messages.warning(request, 'Test Case has not been updated. Error: {}'.format(e))
     else:
-        form = TestCaseForm(instance=testcase)
-
+        pass
     context = {
-        'form': form,
         'testcase': testcase,
     }
     return render(request, template, context)
@@ -266,6 +263,18 @@ def test_cycle_detail(request, slug):
         'items': pages[0],
         'page_range': pages[1],
         'testcycle': testcycle,
+    }
+
+    return render(request, template, context)
+
+
+def test_case_detail_in_progress(request, slug):
+    template = 'testcase/new_test_case.html'
+
+    testcase = get_object_or_404(TestCase, slug=slug)
+
+    context = {
+        'testcase': testcase,
     }
 
     return render(request, template, context)

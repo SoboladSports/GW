@@ -224,6 +224,9 @@ class TestStep(models.Model):
     def save(self, *args, **kwargs):
         super(TestStep, self).save(*args, **kwargs)
 
+    def get_step(self):
+        return self.step
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=250)
@@ -298,7 +301,7 @@ class TestCase(models.Model):
         return conditions
 
     def get_teststeps(self):
-        steps = [t.id for t in self.teststep.all()]
+        steps = [t for t in self.teststep.all()]
         return steps
 
     def get_testcase(self):

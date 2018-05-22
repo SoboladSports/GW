@@ -77,7 +77,7 @@
     {% for item in items %}
         <tr>
             <td> {% if item.check %} <input id="checkBox" type="checkbox" checked> {% else %} <input id="checkBox" type="checkbox" > {% endif %} </td>
-            <td> <a href = "{% url 'TestCase:test_case_detail' slug=item.testcase.get_slug %}"> {{item.testcase.get_title|truncatechars:20}} </a> </td>
+            <td> <a href = "{% url 'TestCase:test_case_detail_in_progress' slug=item.testcase.get_slug %}"> {{item.testcase.get_title|truncatechars:20}} </a> </td>
             <td> {{item.testcase.get_priority}} </td>
             <td> {{item.testcase.get_tags}} </td>
             <td>

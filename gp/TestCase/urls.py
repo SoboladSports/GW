@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from .views import test_case_detail, test_case_list, project_detail, search, new_test_case, test_case_list_admin, \
-    edit_test_case, delete_test_case, test_cycle_list, test_cycle_detail
+    edit_test_case, delete_test_case, test_cycle_list, test_cycle_detail, test_case_detail_in_progress
 
 app_name = 'TestCase'
 
@@ -18,6 +18,6 @@ urlpatterns = [
     url(r'delete_test_case/(?P<pk>\d+)/$', delete_test_case, name='delete_test_case'),
     url(r'test-cycle-list/$', test_cycle_list, name='test-cycle-list'),
     url(r'test-cycle-detail/(?P<slug>[-\w]+)/$', test_cycle_detail, name='test_cycle_detail'),
-
+    url(r'test-case-detail-in-progress/(?P<slug>[-\w]+)/$', test_case_detail_in_progress, name='test_case_detail_in_progress'),
 
 ]

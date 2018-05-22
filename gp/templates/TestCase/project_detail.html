@@ -28,7 +28,7 @@
 			<td> {{item.get_tags}} </td>
 			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
 			<td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
-		</tr>		
+		</tr>
 	{% endfor %}
 	</tbody>
 
