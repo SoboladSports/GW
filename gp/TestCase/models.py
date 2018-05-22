@@ -67,7 +67,7 @@ class Element(models.Model):
         super(Element, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     def get_screen(self):
         screens = [t.title for t in self.screen.all()]
@@ -353,3 +353,7 @@ class TestCycle(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_tags(self):
+        tags = [t.title for t in self.tag.all()]
+        return tags

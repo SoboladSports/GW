@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h1> Test Cycles </h1>
+
+<hr>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col"> ID </th>
+            <th scope="col"> Title </th>
+            <th scope="col"> Project </th>
+            <th scope="col"> Status </th>
+            <th scope="col"> RC Number </th>
+            <th scope="col"> Tags </th>
+            <th scope="col"> Edit </th>
+            <th scope="col"> Delete </th>
+        </tr>
+
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr>
+            <td> {{item.pk}} </td>
+            <td> <a href = "{% url 'TestCase:test_cycle_detail' slug=item.slug %}"> {{item.title|truncatechars:20}} </a> </td>
+            <td> {{item.project}} </td>
+            <td> {{item.status}} </td>
+            <td> {{item.rcnumber}} </td>
+            <td> {{item.get_tags}} </td>
+            <!--TODO: need links to be edited-->
+            <td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
+            <td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+
+</table>
+
+
+{% include 'pagination.html' %}
+
+{% endblock %}

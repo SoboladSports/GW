@@ -220,3 +220,33 @@ def test_case_list_admin(request):
     }
 
     return render(request, template, context)
+
+
+
+def test_cycle_list(request):
+    template = 'testcase/test_cycle_list.html'
+    testcycle = TestCycle.objects.all()
+    pages = pagination(request, testcycle, 5)
+    context = {
+        'items': pages[0],
+        'page_range': pages[1]
+    }
+
+    return render(request, template, context)
+
+
+def test_cycle_detail(request, slug):
+    template = 'testcase/test_cycle_detail.html'
+    testcycle = get_object_or_404(TestCycle, slug=slug)
+    testcases = []
+    for t in testcycle.testcase.all():
+        testcases.append(t)
+    pages = pagination(request, testcases, 5)
+
+    context = {
+        'items': pages[0],
+        'page_range': pages[1],
+        'testcycle': testcycle,
+    }
+
+    return render(request, template, context)
