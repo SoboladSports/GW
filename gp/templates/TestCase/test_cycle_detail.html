@@ -67,6 +67,7 @@
             <th scope="col"> TC Title </th>
             <th scope="col"> Priority </th>
             <th scope="col"> Tags </th>
+            <th scope="col"> Status </th>
         </tr>
     </thead>
     
@@ -79,6 +80,23 @@
             <td> <a href = "{% url 'TestCase:test_case_detail' slug=item.testcase.get_slug %}"> {{item.testcase.get_title|truncatechars:20}} </a> </td>
             <td> {{item.testcase.get_priority}} </td>
             <td> {{item.testcase.get_tags}} </td>
+            <td>
+                <samp>
+                {% if item.status == "Passed" %}
+                    <font color="green">
+                        {{item.status}}
+                    </font>
+                {% elif item.status == "Failed" %}
+                    <font color="red">
+                        {{item.status}}
+                    </font>
+                {% else %}
+                    <font color="blue">
+                        {{item.status}}
+                    </font>
+                {% endif %}
+                </samp>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
