@@ -2,7 +2,7 @@
 
 
 {% block content %}
-
+<div align="center"> <h1> <samp> Test-Cases</samp></h1> </div>
 <table class="table">
 	<thead>
 		<form method="GET" action ="{% url 'TestCase:search' %}">
@@ -25,7 +25,7 @@
 						Search
 					</button>
 				</th>
-				<th scope ="col"> </th>
+				<th scope ="col"> <a href = ""> <button class = "btn btn-primary"> Create the new one </button></a> </th>
 			</tr>
 		</form>
 	</thead>

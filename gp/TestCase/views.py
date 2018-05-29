@@ -63,7 +63,8 @@ def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)
     testcase = TestCase.objects.filter(project=project)
 
-    pages = pagination(request, testcase, 10)
+    pages = pagination(request, testcase, 2)
+
     context = {
         'project': project,
         'items': pages[0],
@@ -277,4 +278,17 @@ def test_case_detail_in_progress(request, slug):
         'testcase': testcase,
     }
 
+    return render(request, template, context)
+
+
+
+
+def sample(request):
+    template = 'testcase/sample.html'
+
+
+
+    context = {
+
+    }
     return render(request, template, context)

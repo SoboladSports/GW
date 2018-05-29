@@ -40,7 +40,21 @@
 	{% elif url_name == 'delete_test_case' %}
 		<h2> Delete test-case: {{testcase}} </h2>
 	{% else %}
-		<h2> Test-Case View </h2>
+		<h2>
+            <table class="table"> 
+                <tr>
+                    <td>
+                        Test-Case View 
+                    </td>
+                    <td>
+                        <button class = "btn btn-warning"> Edit </button>
+                    </td>
+                    <td>
+                        <button class = "btn btn-danger"> Delete </button>
+                    </td>
+                </tr>
+            </table>
+        </h2>
 	{% endif %}
 {% endwith %}
 
@@ -62,29 +76,61 @@
         <div align="left">
             <hr>
             Title:<br>
-            <input type="text" name="title" value="{{testcase.get_title}}" disabled>
+             {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'edit_test_case' %}
+                            <input type="text" name="title" value="{{testcase.get_title}}" >
+                        {% else %}
+                            <input type="text" name="title" value="{{testcase.get_title}}" disabled>
+                        {% endif %}
+            {% endwith %}
             <hr>
             <table class="table">
                 <tr>
                     <td>
                     Project:<br>
-                    <select disabled name="Project">
-                        <option selected>{{testcase.get_project}}</option>
-                    </select>
+                    {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'edit_test_case' %}
+                            <select  name="Project">
+                                <option selected>{{testcase.get_project}}</option>
+                            </select>         
+                        {% else %}
+                            <select disabled name="Project">
+                                <option selected>{{testcase.get_project}}</option>
+                            </select>           
+                        {% endif %}
+                    {% endwith %}
                     </td>
                     <td>
                     Priority:<br>
-                    <select disabled name="Project">
-                        <option selected>{{testcase.get_priority}}</option>
-                    </select>
+                    {% with url_name=request.resolver_match.url_name %}
+                        {% if url_name == 'edit_test_case' %}
+                            <select  name="Project">
+                                <option selected>{{testcase.get_priority}}</option>
+                            </select>           
+                        {% else %}
+                            <select disabled name="Project">
+                                <option selected>{{testcase.get_priority}}</option>
+                            </select>   
+                        {% endif %}
+                    {% endwith %}
+                    
                     </td>
                 </tr>
             </table>
             <hr>
             Description:<br>
-            <textarea rows="2" cols="50" name="description" disabled>
-                {{testcase.get_description}}
-            </textarea>
+            {% with url_name=request.resolver_match.url_name %}
+                {% if url_name == 'edit_test_case' %}
+                    <textarea rows="2" cols="50" name="description" >
+                        {{testcase.get_description}}
+                    </textarea>             
+                {% else %}
+                    <textarea rows="2" cols="50" name="description" disabled>
+                        {{testcase.get_description}}
+                    </textarea>           
+                {% endif %}
+            {% endwith %}
+           
             <hr>
 
 
@@ -125,6 +171,9 @@
                         </td>
                         {% with url_name=request.resolver_match.url_name %}
                             {% if url_name == 'edit_test_case' %}
+                                <td>
+                                    <button type="submit" class="btn btn-warning" > Edit </button>
+                                </td>
                                 <td>
                                     <button type="submit" class="btn btn-danger" > Delete </button>
                                 </td>
@@ -190,8 +239,8 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if t.get_step.get_conditions.get_testdata %}
-                                {{t.get_step.get_conditions.get_testdata}}
+                            {% if t.get_step.get_condition.get_testdata %}
+                                {{t.get_step.get_condition.get_testdata}}
                             {% endif %}
                         </td>
                         <td>
@@ -207,6 +256,9 @@
                                     </select>
                                 </td>
                             {% elif url_name == 'edit_test_case' %}
+                                 <td>
+                                    <button type="submit" class="btn btn-warning" > Edit </button>
+                                </td>
                                 <td>
                                     <button type="submit" class="btn btn-danger" > Delete </button>
                                 </td>
@@ -248,6 +300,13 @@
                             {{t}}
                         </td>
                     {% endfor %}
+                    {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'edit_test_case' %}
+                                 <td>
+                                    <button type="submit" class="btn btn-warning" > Edit </button>
+                                </td>
+                            {% endif %}
+                        {% endwith %}
                 </tr>
             </table>
             <table>
@@ -255,7 +314,7 @@
                             {% if url_name == 'edit_test_case' %}
                                <tr>
                                     <td>
-                                        <input type="text" placeholder="Expected Result...">
+                                        <input type="text" placeholder="Tag...">
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">Add</button>

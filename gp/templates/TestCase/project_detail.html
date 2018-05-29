@@ -3,11 +3,34 @@
 
 {% block content %}
 
-<h1> {{project.title}} </h1>
+<div align="center"> <h1> <samp> {{project.title}} </samp> </h1> </div>
 
 <hr>
 
 <table class="table">
+		<thead>
+		<form method="GET" action ="{% url 'TestCase:search' %}">
+			<tr>
+				<th scope ="col"></th>
+				<th scope ="col">
+					<input name="qText" value = "{{request.GET.qText}}" placeholder="some text...">
+				</th>
+				<th scope ="col"> 
+					<input name="qPriority" value = "{{request.GET.qPriority}}" placeholder="priority...">
+				</th>
+				<th scope ="col">
+					<input name="qTags" value = "{{request.GET.qTags}}" placeholder="tags...">
+				</th>
+				<th scope ="col">
+					<button class="btn btn-success" type="submit">
+						Search
+					</button>
+				</th>
+				<th scope ="col"> </th>
+			</tr>
+		</form>
+	</thead>
+
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col"> ID </th>
