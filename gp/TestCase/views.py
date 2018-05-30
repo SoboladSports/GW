@@ -187,23 +187,6 @@ def new_test_case(request):
     return render(request, template, context)
 
 
-def edit_test_case(request, pk):
-    template = 'testcase/new_test_case.html'
-    testcase = get_object_or_404(TestCase, pk=pk)
-
-    if request.method == "POST":
-        try:
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Test Case has been updated in the database')
-        except Exception as e:
-            messages.warning(request, 'Test Case has not been updated. Error: {}'.format(e))
-    else:
-        pass
-    context = {
-        'testcase': testcase,
-    }
-    return render(request, template, context)
 
 
 def delete_test_case(request, pk):
@@ -290,5 +273,39 @@ def sample(request):
 
     context = {
 
+    }
+    return render(request, template, context)
+
+def edit_test_case(request, pk):
+    template = 'testcase/new_test_case.html'
+    testcase = get_object_or_404(TestCase, pk=pk)
+
+
+    def create_new_tag():
+        queryTag = request.POST.get('NewTag')
+        if request.method == "POST":
+            try:
+                if queryTag:
+                    newTag = Tag()
+                    newTag.title = queryTag
+                    newTag.save()
+                    messages.success(request, 'SUCCESS')
+            except Exception as e:
+                messages.warning(request, 'Got some troubles. Error: {}'.format(e))
+        else:
+            pass
+    create_new_tag()
+    '''if request.method == "POST":
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Test Case has been updated in the database')
+        except Exception as e:
+            messages.warning(request, 'Test Case has not been updated. Error: {}'.format(e))
+    else:
+        pass
+        '''
+    context = {
+        'testcase': testcase,
     }
     return render(request, template, context)

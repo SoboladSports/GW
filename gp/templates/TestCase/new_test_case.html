@@ -72,7 +72,6 @@
 
 
 <!-- testcase -->
-<form method="post"> {% csrf_token %}
         <div align="left">
             <hr>
             Title:<br>
@@ -312,14 +311,17 @@
             <table>
                 {% with url_name=request.resolver_match.url_name %}
                             {% if url_name == 'edit_test_case' %}
-                               <tr>
+                            <form method="post" name="AddTagForm">
+                                {% csrf_token %}
+                                <tr>
                                     <td>
-                                        <input type="text" placeholder="Tag...">
+                                        <input type="text" placeholder="Tag..." name="NewTag">
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">Add</button>
                                     </td>
-                               </tr>
+                                </tr>
+                            </form>
                             {% endif %}
                     {% endwith %}
             </table>
@@ -346,7 +348,6 @@
 <br><br>
 <br><br>
 
-</form>
 
 </div>
 {% endif %}
