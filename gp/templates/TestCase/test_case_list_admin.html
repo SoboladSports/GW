@@ -25,7 +25,13 @@
 						Search
 					</button>
 				</th>
-				<th scope ="col"> <a href = ""> <button class = "btn btn-primary"> Create the new one </button></a> </th>
+				<th scope ="col">
+					<button class = "btn btn-primary">
+						<a href = "{% url 'TestCase:new_test_case' %}" style="color: rgb(255,255,255)">
+							Create new one
+						</a>
+					</button>
+				</th>
 			</tr>
 		</form>
 	</thead>
@@ -48,14 +54,14 @@
 	{% for item in items %}
 		<tr>
 			<td> {{item.pk}} </td>
-			<td> <a href= "{% url 'TestCase:project_detail' slug=item.project %}" > {{item.project}} </a> </td>
+			<td> <a href= "{% url 'TestCase:project_detail' slug=item.project.get_slug.lower %}" > {{item.project}} </a> </td>
 			<td> <a href = "{% url 'TestCase:test_case_detail' slug=item.slug %}"> {{item.title|truncatechars:20}} </a> </td>
 			<td> {{item.priority}} </td>
 			<td> {{item.get_tags}} </td>
 			<td> <a href = "{% url 'TestCase:edit_test_case' pk=item.pk %}"> <button class = "btn btn-warning"> Edit </button></a></td>
 			<td> <a href = "{% url 'TestCase:delete_test_case' pk=item.pk %}"><button class = "btn btn-danger"> Delete </button></a></td>
 
-		</tr>		
+		</tr>
 	{% endfor %}
 	</tbody>
 

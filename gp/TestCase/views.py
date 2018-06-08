@@ -168,6 +168,7 @@ def search(request):
 
 def new_test_case(request):
     template = 'testcase/new_test_case.html'
+    '''
     form = TestCaseForm(request.POST or None)
 
     try:
@@ -183,8 +184,8 @@ def new_test_case(request):
         'form': form,
 
     }
-
-    return render(request, template, context)
+'''
+    return render(request, template)
 
 
 
@@ -290,6 +291,7 @@ def edit_test_case(request, pk):
                     newTag.title = queryTag
                     newTag.save()
                     messages.success(request, 'SUCCESS')
+                    testcase.tag.append(newTag)
             except Exception as e:
                 messages.warning(request, 'Got some troubles. Error: {}'.format(e))
         else:

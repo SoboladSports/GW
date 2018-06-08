@@ -31,20 +31,20 @@
 
 </style>
 <div class="offset-3 col-md-6">
-
+<div align="center">
 {% with url_name=request.resolver_match.url_name %}
 	{% if url_name == 'new_test_case' %}
-		<h2> Add a new test-case: </h2>
+		<h2> <samp> Add a new test-case:</samp> </h2>
 	{% elif url_name == 'edit_test_case' %}
-		<h2> Edit test-case: {{testcase}} </h2>
+		<h2><samp> Edit test-case:</samp> {{testcase}} </h2>
 	{% elif url_name == 'delete_test_case' %}
-		<h2> Delete test-case: {{testcase}} </h2>
+		<h2> <samp>Delete test-case:</samp> {{testcase}}</h2>
 	{% else %}
 		<h2>
             <table class="table"> 
                 <tr>
                     <td>
-                        Test-Case View 
+                    <samp>    Test-Case View </samp>
                     </td>
                     <td>
                         <button class = "btn btn-warning"> Edit </button>
@@ -55,6 +55,7 @@
                 </tr>
             </table>
         </h2>
+</div>
 	{% endif %}
 {% endwith %}
 
@@ -78,6 +79,8 @@
              {% with url_name=request.resolver_match.url_name %}
                         {% if url_name == 'edit_test_case' %}
                             <input type="text" name="title" value="{{testcase.get_title}}" >
+                        {% elif url_name == 'new_test_case' %}
+                            <input type="text" name="title" placeholder="Type some text here...">
                         {% else %}
                             <input type="text" name="title" value="{{testcase.get_title}}" disabled>
                         {% endif %}
@@ -91,7 +94,11 @@
                         {% if url_name == 'edit_test_case' %}
                             <select  name="Project">
                                 <option selected>{{testcase.get_project}}</option>
-                            </select>         
+                            </select>
+                        {% elif url_name == 'new_test_case' %}
+                            <select name="Project">
+                                <option selected>BI</option>
+                            </select>
                         {% else %}
                             <select disabled name="Project">
                                 <option selected>{{testcase.get_project}}</option>
@@ -105,7 +112,11 @@
                         {% if url_name == 'edit_test_case' %}
                             <select  name="Project">
                                 <option selected>{{testcase.get_priority}}</option>
-                            </select>           
+                            </select>
+                        {% elif url_name == 'new_test_case' %}
+                            <select name="Project">
+                                <option selected>Smoke</option>
+                            </select>
                         {% else %}
                             <select disabled name="Project">
                                 <option selected>{{testcase.get_priority}}</option>
@@ -122,7 +133,9 @@
                 {% if url_name == 'edit_test_case' %}
                     <textarea rows="2" cols="50" name="description" >
                         {{testcase.get_description}}
-                    </textarea>             
+                    </textarea>
+                {% elif url_name == 'new_test_case' %}
+                     <textarea rows="2" cols="50" name="description" placeholder="Type some text here..."></textarea>
                 {% else %}
                     <textarea rows="2" cols="50" name="description" disabled>
                         {{testcase.get_description}}
@@ -181,7 +194,7 @@
                     </tr>
                 {% endfor %}
                 {% with url_name=request.resolver_match.url_name %}
-                        {% if url_name == 'edit_test_case' %}
+                        {% if url_name == 'edit_test_case' or url_name == 'new_test_case' %}
                             <td>
                             </td>
                             <td>
@@ -222,7 +235,10 @@
                     {% endwith %}
                 </tr>
                 {% for t in testcase.get_teststeps %}
-                    <tr>
+
+                {% if t.get_step.get_condition.get_screen.get_title == 'profile' %}
+                  <tr>
+
                         <td>
 
                         </td>
@@ -264,9 +280,55 @@
                             {% endif %}
                         {% endwith %}
                     </tr>
+                {% else %}
+                 <tr>
+
+                        <td>
+
+                        </td>
+                        <td>
+                            {{t.get_step.get_condition.get_screen}}
+                        </td>
+                        <td>
+                            {{t.get_step.get_condition.get_action}}
+                        </td>
+                        <td>
+                            {% if t.get_step.get_condition.get_element %}
+                                {{t.get_step.get_condition.get_element}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if t.get_step.get_condition.get_testdata %}
+                                {{t.get_step.get_condition.get_testdata}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{t.get_step.get_expresult}}
+                        </td>
+                        {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'test_case_detail_in_progress' %}
+                                <td>
+                                    <select>
+                                      <option value="passed">Passed</option>
+                                      <option value="failed">Failed</option>
+                                      <option value="to be checked" selected>To be checked</option>
+                                    </select>
+                                </td>
+                            {% elif url_name == 'edit_test_case' %}
+                                 <td>
+                                    <button type="submit" class="btn btn-warning" > Edit </button>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-danger" > Delete </button>
+                                </td>
+                            {% endif %}
+                        {% endwith %}
+                    </tr>
+                {% endif %}
+
                     {% endfor %}
                        {% with url_name=request.resolver_match.url_name %}
-                            {% if url_name == 'edit_test_case' %}
+                            {% if url_name == 'edit_test_case' or url_name == 'new_test_case' %}
                                 <td>
                                 </td>
                                 <td>
@@ -310,7 +372,7 @@
             </table>
             <table>
                 {% with url_name=request.resolver_match.url_name %}
-                            {% if url_name == 'edit_test_case' %}
+                            {% if url_name == 'edit_test_case' or url_name == 'new_test_case' %}
                             <form method="post" name="AddTagForm">
                                 {% csrf_token %}
                                 <tr>
