@@ -2,11 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from gp.config import pagination
 from django.db.models import Q
 from django.contrib import messages
+from . import db_assistant
 # Create your views here.
 
 from .models import Project, Screen, Element, TestData, Action, Condition, Step, TestStep, Tag, TestCase, Cases, TestCycle
 #from .forms import TestCaseForm, TestCaseView
 
+from .db_assistant import create_new_condition, create_new_tag, create_new_step
 
 def test_case_list(request):
     template = 'testcase/test_case_list.html'
@@ -275,6 +277,8 @@ def sample(request):
     context = {
 
     }
+
+
     return render(request, template, context)
 
 def edit_test_case(request, pk):
@@ -282,31 +286,44 @@ def edit_test_case(request, pk):
     testcase = get_object_or_404(TestCase, pk=pk)
 
 
-    def create_new_tag():
-        queryTag = request.POST.get('NewTag')
-        if request.method == "POST":
-            try:
-                if queryTag:
-                    newTag = Tag()
-                    newTag.title = queryTag
-                    newTag.save()
-                    messages.success(request, 'SUCCESS')
-                    testcase.tag.append(newTag)
-            except Exception as e:
-                messages.warning(request, 'Got some troubles. Error: {}'.format(e))
-        else:
-            pass
-    create_new_tag()
-    '''if request.method == "POST":
+    if request.method == "POST":
         try:
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Test Case has been updated in the database')
+
+            queryTag = request.POST.get('NewTag')
+
+            if (queryTag):
+                create_new_tag(queryTag)
+                messages.success(request, 'Tag was added to the database')
+
+
+            queryCondScreen = request.POST.get('NewCondScreen')
+            queryCondAction = request.POST.get('NewCondAction')
+            queryCondElement = request.POST.get('NewCondElement')
+            queryCondTestData = request.POST.get('NewCondTestData')
+
+            if (queryCondScreen and queryCondAction):
+                create_new_condition(queryCondScreen, queryCondAction, queryCondElement, queryCondTestData)
+                messages.success(request, 'Condition was added to the database')
+
+            queryStepScreen = request.POST.get('NewStepScreen')
+            queryStepAction = request.POST.get('NewStepAction')
+            queryStepElement = request.POST.get('NewStepElement')
+            queryStepTestData = request.POST.get('NewStepTestData')
+            queryStepExpResult = request.POST.get('NewStepExpResult')
+
+            if (queryStepScreen and queryStepAction and queryStepExpResult):
+                create_new_step(queryStepScreen, queryStepAction, queryStepElement, queryStepTestData, queryStepExpResult)
+                messages.success(request, 'Step was added to the database')
         except Exception as e:
-            messages.warning(request, 'Test Case has not been updated. Error: {}'.format(e))
+            messages.warning(request, 'Got some troubles. Error : {}'.format(e))
+
     else:
         pass
-        '''
+
+
+
+
+
     context = {
         'testcase': testcase,
     }

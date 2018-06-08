@@ -195,23 +195,26 @@
                 {% endfor %}
                 {% with url_name=request.resolver_match.url_name %}
                         {% if url_name == 'edit_test_case' or url_name == 'new_test_case' %}
-                            <td>
-                            </td>
-                            <td>
-                                <input type="text" placeholder="Screen...">
-                            </td>
-                            <td>
-                                <input type="text" placeholder="Action...">
-                            </td>
-                            <td>
-                                <input type="text" placeholder="Element...">
-                            </td>
-                            <td>
-                                <input type="text" placeholder="Testdata...">
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-success">Add</button>
-                            </td>
+                            <form method="post" name="AddCondForm">
+                                {% csrf_token %}
+                                <td>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Screen..." name="NewCondScreen">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Action..." name="NewCondAction">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Element..." name="NewCondElement">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="Testdata..." name="NewCondTestData">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-success">Add</button>
+                                </td>
+                            </form>
                         {% endif %}
                 {% endwith %}
             </table>
@@ -329,26 +332,29 @@
                     {% endfor %}
                        {% with url_name=request.resolver_match.url_name %}
                             {% if url_name == 'edit_test_case' or url_name == 'new_test_case' %}
-                                <td>
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Screen...">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Action...">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Element...">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Testdata...">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Expected Result...">
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-success">Add</button>
-                                </td>
+                                <form method="post" name="AddStepForm">
+                                    {% csrf_token %}
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Screen..." name="NewStepScreen">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Action..." name="NewStepAction">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Element..." name="NewStepElement">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Testdata..." name="NewStepTestData">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Expected Result..." name="NewStepExpResult">
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success">Add</button>
+                                    </td>
+                                </form>
                             {% endif %}
                     {% endwith %}
             </table>
